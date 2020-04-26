@@ -38,7 +38,8 @@ namespace Microwave.Integrationtest
         {
             _uut.StartCooking(50, 60);
 
-            Assert.That(_timer.TimeRemaining, Is.EqualTo(60));
+            //Is equal to 60k milliseconds
+            Assert.That(_timer.TimeRemaining, Is.EqualTo(60000));
         }
 
         [Test]
@@ -62,6 +63,15 @@ namespace Microwave.Integrationtest
             _uut.StartCooking(50, 60);
             
             Assert.That(() => _uut.StartCooking(50, 60), Throws.TypeOf<ApplicationException>());
+        }
+
+        [Test]
+        public void StartCooking_PowerTubeStop()
+        {
+            _uut.StartCooking(50, 60);
+            _uut.Stop();
+
+            Assert.That(_stw.ToString(), Contains.Substring("off"));
         }
     }
 }
