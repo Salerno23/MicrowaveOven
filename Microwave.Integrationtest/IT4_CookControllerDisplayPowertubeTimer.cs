@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
@@ -20,6 +17,8 @@ namespace Microwave.Integrationtest
         private ITimer _timer;
         private IOutput _output;
 
+        private StringWriter _stw;
+
         [SetUp]
         public void Setup()
         {
@@ -29,14 +28,40 @@ namespace Microwave.Integrationtest
             _timer = new Timer();
 
             _uut = new CookController(_timer,  _display, _pt);
+
+            _stw = new StringWriter();
+            Console.SetOut(_stw);
         }
 
-        //[Test]
-        //public void StartCooking_
+        [Test]
+        public void StartCooking_ValidParameters_TimerStarted()
+        {
+            _uut.StartCooking(50, 60);
 
+            Assert.That(_timer.TimeRemaining, Is.EqualTo(60));
+        }
 
+        [Test]
+        public void StartCooking_ValidParameters_PowerTubeStarted()
+        {
+            _uut.StartCooking(50, 60);
 
+            Assert.That(_stw.ToString(), Contains.Substring("works"));
+        }
 
+        [TestCase(0)]
+        [TestCase(101)]
+        public void StartCooking_InValidWattage_PowerTubeStarted(int power)
+        {
+            Assert.That(() => _uut.StartCooking(power, 60), Throws.TypeOf<ArgumentOutOfRangeException>());
+        }
 
+        [Test]
+        public void StartCooking_PowerTubeStartTwice()
+        {
+            _uut.StartCooking(50, 60);
+            
+            Assert.That(() => _uut.StartCooking(50, 60), Throws.TypeOf<ApplicationException>());
+        }
     }
 }
