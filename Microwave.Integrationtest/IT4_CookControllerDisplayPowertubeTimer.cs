@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
-using NSubstitute.Extensions;
 using NUnit.Framework;
 
 namespace Microwave.Integrationtest
@@ -39,29 +37,22 @@ namespace Microwave.Integrationtest
             Console.SetOut(_stw);
         }
 
-        //Need to be tested later without fake
-        //[Test]
-        //public void StartCooking_ValidParameters_TimerStarted()
-        //{
-        //    _uut.StartCooking(50, 60);
-
-        //    //Is equal to 60k milliseconds
-        //    Assert.That(_timer.TimeRemaining, Is.EqualTo(60000));
-        //}
+        //Powertube interface IT
 
         [Test]
         public void StartCooking_ValidParameters_PowerTubeStarted()
         {
             _uut.StartCooking(50, 60);
 
-            Assert.That(_stw.ToString(), Contains.Substring("50"));
+            Assert.That(_stw.ToString(), Contains.Substring("works with 50"));
         }
 
         [TestCase(0)]
         [TestCase(101)]
         public void StartCooking_InValidWattage_PowerTubeStarted(int power)
         {
-            Assert.That(() => _uut.StartCooking(power, 60), Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.That(() => _uut.StartCooking(power, 60), 
+                Throws.TypeOf<ArgumentOutOfRangeException>());
         }
 
         [Test]
@@ -69,7 +60,8 @@ namespace Microwave.Integrationtest
         {
             _uut.StartCooking(50, 60);
             
-            Assert.That(() => _uut.StartCooking(50, 60), Throws.TypeOf<ApplicationException>());
+            Assert.That(() => _uut.StartCooking(50, 60), 
+                Throws.TypeOf<ApplicationException>());
         }
 
         [Test]
@@ -80,6 +72,8 @@ namespace Microwave.Integrationtest
 
             Assert.That(_stw.ToString(), Contains.Substring("off"));
         }
+
+        //Display interface IT
 
         [Test]
         public void Cooking_TimerTick_DisplayCalled()

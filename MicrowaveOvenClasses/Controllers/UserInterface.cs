@@ -123,6 +123,7 @@ namespace MicrowaveOvenClasses.Controllers
                     myCooker.Stop();
                     powerLevel = 50;
                     time = 1;
+                    myDisplay.Clear(); //Was missing, is in STM
                     myState = States.DOOROPEN;
                     break;
             }
