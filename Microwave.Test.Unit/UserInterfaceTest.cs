@@ -288,6 +288,22 @@ namespace Microwave.Test.Unit
         }
 
         [Test]
+        public void Cooking_DoorIsOpened_DisplayCleared()
+        {
+            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            // Now in SetPower
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            // Now in SetTime
+            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            // Now in cooking
+
+            // Open door
+            door.Opened += Raise.EventWith(this, EventArgs.Empty);
+
+            display.Received(1).Clear();
+        }
+
+        [Test]
         public void Cooking_CancelButton_CookerCalled()
         {
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
