@@ -47,8 +47,9 @@ namespace Microwave.Integrationtest
             Assert.That(_stw.ToString(), Contains.Substring("works with 50"));
         }
 
+        //Power can go from 1 to 700, not 1 to 100, corrected
         [TestCase(0)]
-        [TestCase(101)]
+        [TestCase(701)]
         public void StartCooking_InValidWattage_PowerTubeStarted(int power)
         {
             Assert.That(() => _uut.StartCooking(power, 60), 

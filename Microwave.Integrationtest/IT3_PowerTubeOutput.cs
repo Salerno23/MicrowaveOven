@@ -25,9 +25,11 @@ namespace Microwave.Integrationtest
             Console.SetOut(_stw);
         }
 
+        //Power must be within 1 and 700, not 1 and 100
+        //Unit test corrected
         [TestCase(1)]
         [TestCase(50)]
-        [TestCase(100)]
+        [TestCase(700)]
         public void TurnOn_WasOffCorrectPower_CorrectOutput(int power)
         {
             _uut.TurnOn(power);
@@ -35,11 +37,13 @@ namespace Microwave.Integrationtest
            
         }
 
+        //Power must be within 1 and 700, not 1 and 100
+        //Unit test corrected
         [TestCase(-5)]
         [TestCase(-1)]
         [TestCase(0)]
-        [TestCase(101)]
-        [TestCase(150)]
+        [TestCase(701)]
+        [TestCase(750)]
         public void TurnOn_WasOffOutOfRangePower_ThrowsException(int power)
         {
             Assert.Throws<System.ArgumentOutOfRangeException>(() => _uut.TurnOn(power));
@@ -67,9 +71,6 @@ namespace Microwave.Integrationtest
             _uut.TurnOn(50);
             Assert.Throws<System.ApplicationException>(() => _uut.TurnOn(60));
         }
-
-
-
     }
     
 }

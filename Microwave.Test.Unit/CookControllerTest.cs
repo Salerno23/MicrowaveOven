@@ -64,9 +64,6 @@ namespace Microwave.Test.Unit
             powerTube.Received().TurnOff();
         }
 
-        //TODO
-        //Tests with UI
-
         [Test]
         public void Cooking_TimerExpired_PowerTubeOff()
         {
